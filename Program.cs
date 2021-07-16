@@ -84,6 +84,8 @@ namespace H4M
             List<string> keys = dict.Keys.OrderBy(x => random.Next()).ToList();
             List<string> values = dict.Values.ToList();
 
+            List<int> indicies = new List<int>();
+
             for (var i = 0; i < keys.Count; i++)
             {
                 string key = keys[i];
@@ -104,16 +106,16 @@ namespace H4M
                     
                     int index = random.Next(dict.Values.Count);
 
-                    if (values[index] == dict[key])
+                    while (indicies.Contains(index) || values[index] == dict[key])
                     {
-                        while (values[index] == dict[key])
-                        {
-                            index = random.Next(dict.Values.Count);
-                        }
+                        index = random.Next(dict.Values.Count);
                     }
 
+                    indicies.Add(index);
                     Console.WriteLine($"{j + 1}. {values[index]}");
                 }
+
+                indicies.Clear();
 
                 Console.WriteLine();
                 string num = Console.ReadLine();

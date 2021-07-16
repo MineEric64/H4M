@@ -33,6 +33,11 @@ namespace H4M
                     string key = pair[0].Trim();
                     string value = string.Join(";", pair.ToList().GetRange(1, pair.Length - 1)).Trim();
 
+                    if (dict.ContainsKey(key))
+                    {
+                        continue;
+                    }
+
                     dict.Add(key, value);
                     //dict.Add(value, key);
                 }
