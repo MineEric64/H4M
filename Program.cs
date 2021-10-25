@@ -16,50 +16,55 @@ namespace H4M
 
         static void Main(string[] args)
         {
-            Initialize();
-
-            string[] paths = Directory.GetFiles(TEXT_DIRECTORY, "*.txt", SearchOption.TopDirectoryOnly);
-
-            for (var i = 0; i < paths.Length; i++)
+            while (true)
             {
-                string path = paths[i];
-                Console.WriteLine($"{i + 1}. {Path.GetFileNameWithoutExtension(path)}");
-            }
+                Initialize();
 
-            if (paths.Length <= 0)
-            {
-                Console.WriteLine("Couldn't find any text file.");
-                return;
-            }
+                string[] paths = Directory.GetFiles(TEXT_DIRECTORY, "*.txt", SearchOption.TopDirectoryOnly);
 
-            Console.Write("Please select the number which you want to open the text: ");
-            string num = Console.ReadLine();
-
-            if (int.TryParse(num, out var n))
-            {
-                if (n >= 1 && n <= paths.Length)
+                for (var i = 0; i < paths.Length; i++)
                 {
-                    string text = File.ReadAllText(paths[n - 1]);
-                    Dict = DictionaryManager.GetDictionaryFromText(text);
+                    string path = paths[i];
+                    Console.WriteLine($"{i + 1}. {Path.GetFileNameWithoutExtension(path)}");
+                }
+
+                if (paths.Length < 0)
+                {
+                    Console.WriteLine("Couldn't find any text file.");
+                    return;
+                }
+
+                Console.Write("Please select the number which you want to open the text: ");
+                string num = Console.ReadLine();
+
+                if (int.TryParse(num, out var n))
+                {
+                    if (n >= 1 && n <= paths.Length)
+                    {
+                        string text = File.ReadAllText(paths[n - 1]);
+                        Dict = DictionaryManager.GetDictionaryFromText(text);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Out of range.");
+                    Console.WriteLine("it's not number.");
                     return;
                 }
+
+                var stats = PlayGame(Dict);
+
+                Console.Clear();
+                PrintGameStats(stats);
+
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadLine(); //waiting for continue
+
+                Console.Clear();
             }
-            else
-            {
-                Console.WriteLine("it's not number.");
-                return;
-            }
-
-            var stats = PlayGame(Dict);
-
-            Console.Clear();
-            PrintGameStats(stats);
-
-            Console.ReadLine(); //waiting for exit
         }
 
         static void Initialize()
