@@ -58,11 +58,13 @@ namespace H4M
 
             Console.Clear();
             PrintGameStats(stats);
+
+            Console.ReadLine(); //waiting for exit
         }
 
         static void Initialize()
         {
-            Console.Title = "H4M v21.1.2";
+            Console.Title = "H4M v21.2.2";
             Console.WriteLine(Resources.H4MA);
             Console.WriteLine("by MineEric64, 2021");
             Console.WriteLine("only supports txt extension for searching dictionary data file.");
@@ -94,9 +96,10 @@ namespace H4M
 
                 Console.WriteLine($"{i + 1}] {key}");
 
-                int real = random.Next(5);
+                int max_count = Math.Min(5, dict.Values.Count);
+                int real = random.Next(max_count);
 
-                for (var j = 0; j < 5; j++)
+                for (var j = 0; j < max_count; j++)
                 {
                     if (j == real)
                     {
@@ -109,6 +112,7 @@ namespace H4M
                     while (indicies.Contains(index) || values[index] == dict[key])
                     {
                         index = random.Next(dict.Values.Count);
+                        if (values[index] == dict[key] && !indicies.Contains(index)) indicies.Add(index); //정답 예외 처리
                     }
 
                     indicies.Add(index);
