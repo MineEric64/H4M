@@ -13,7 +13,7 @@ namespace H4M
         /// </summary>
         public const string IDENTIFIER = ";";
 
-        public static Dictionary<string, string> GetDictionaryFromText(string text)
+        public static Dictionary<string, string> GetDictionaryFromText(string text, bool reverse = false)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
 
@@ -38,8 +38,8 @@ namespace H4M
                         continue;
                     }
 
-                    dict.Add(key, value);
-                    //dict.Add(value, key);
+                    if (!reverse) dict.Add(key, value);
+                    else dict.Add(value, key);
                 }
             }
 

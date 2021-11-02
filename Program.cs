@@ -42,7 +42,7 @@ namespace H4M
                     if (n >= 1 && n <= paths.Length)
                     {
                         string text = File.ReadAllText(paths[n - 1]);
-                        Dict = DictionaryManager.GetDictionaryFromText(text);
+                        Dict = DictionaryManager.GetDictionaryFromText(text, true);
                     }
                     else
                     {
