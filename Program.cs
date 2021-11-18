@@ -5,14 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+using syntaxERROR.OPtion;
 using H4M.Properties;
 
 namespace H4M
 {
     class Program
     {
-        public static string TEXT_DIRECTORY { get; } = $@"{AppContext.BaseDirectory}Texts";
+        public static string TEXT_DIRECTORY { get; } = Path.Combine(AppContext.BaseDirectory, "Texts");
         public static Dictionary<string, string> Dict { get; private set; } = new Dictionary<string, string>();
+
+        public static OPtion<JObject> Options { get; set; } = new OPtion<JObject>(Path.Combine(AppContext.BaseDirectory, "settings.json"));
+        public static H4MOption H4MSettings { get; set; }
 
         static void Main(string[] args)
         {
@@ -42,7 +49,7 @@ namespace H4M
                     if (n >= 1 && n <= paths.Length)
                     {
                         string text = File.ReadAllText(paths[n - 1]);
-                        Dict = DictionaryManager.GetDictionaryFromText(text, true);
+                        Dict = DictionaryManager.GetDictionaryFromText(text, H4MSettings.ReverseMode);
                     }
                     else
                     {
@@ -74,6 +81,18 @@ namespace H4M
             Console.WriteLine("by MineEric64, 2021");
             Console.WriteLine("only supports txt extension for searching dictionary data file.");
             Console.WriteLine();
+
+            if (File.Exists(Options.FilePath))
+            {
+                Options.Load();
+            }
+            else
+            {
+                Options.LoadText(Resources.settings_default);
+                Options.Save();
+            }
+
+            H4MSettings = Options.Data.ToObject<H4MOption>();
         }
 
         static void PrintGameStats(GameStats stats)
