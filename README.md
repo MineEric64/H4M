@@ -8,4 +8,4 @@
  2021 & 2024.
 
 # TODO
-- [v] Add [OPtion](https://github.com/Luigi38/ProjectNextop/issues/13) to manage settings
+- [x] Add [OPtion](https://github.com/Luigi38/ProjectNextop/issues/13) to manage settings
