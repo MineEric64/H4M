@@ -27,6 +27,11 @@ namespace H4M
             {
                 Initialize();
 
+                if (!Directory.Exists(TEXT_DIRECTORY))
+                {
+                    Directory.CreateDirectory(TEXT_DIRECTORY);
+                }
+
                 string[] paths = Directory.GetFiles(TEXT_DIRECTORY, "*.txt", SearchOption.TopDirectoryOnly);
 
                 for (var i = 0; i < paths.Length; i++)
@@ -62,7 +67,7 @@ namespace H4M
                     return;
                 }
 
-                var stats = PlayGame(Dict);
+                var stats = PlayGame(Dict, H4MSettings.MultipleChoice);
 
                 Console.Clear();
                 PrintGameStats(stats);
@@ -76,9 +81,9 @@ namespace H4M
 
         static void Initialize()
         {
-            Console.Title = "H4M v21.2.2";
+            Console.Title = "H4M v21.2.3";
             Console.WriteLine(Resources.H4MA);
-            Console.WriteLine("by MineEric64, 2021");
+            Console.WriteLine("by MineEric64, 2021 & 2024");
             Console.WriteLine("only supports txt extension for searching dictionary data file.");
             Console.WriteLine();
 
@@ -102,7 +107,7 @@ namespace H4M
             Console.WriteLine($"Wrong Answers: [ {string.Join(", ", stats.WrongKeys)} ]");
         }
 
-        static GameStats PlayGame(Dictionary<string, string> dict)
+        static GameStats PlayGame(Dictionary<string, string> dict, bool multiple_choice = true)
         {
             var random = new Random();
 
@@ -120,37 +125,60 @@ namespace H4M
 
                 Console.WriteLine($"{i + 1}] {key}");
 
-                int max_count = Math.Min(5, dict.Values.Count);
-                int real = random.Next(max_count);
-
-                for (var j = 0; j < max_count; j++)
+                if (multiple_choice)
                 {
-                    if (j == real)
-                    {
-                        Console.WriteLine($"{real + 1}. {dict[key]}");
-                        continue;
-                    }
-                    
-                    int index = random.Next(dict.Values.Count);
+                    int max_count = Math.Min(5, dict.Values.Count);
+                    int real = random.Next(max_count);
 
-                    while (indicies.Contains(index) || values[index] == dict[key])
+                    for (var j = 0; j < max_count; j++)
                     {
-                        index = random.Next(dict.Values.Count);
-                        if (values[index] == dict[key] && !indicies.Contains(index)) indicies.Add(index); //정답 예외 처리
+                        if (j == real)
+                        {
+                            Console.WriteLine($"{real + 1}. {dict[key]}");
+                            continue;
+                        }
+
+                        int index = random.Next(dict.Values.Count);
+
+                        while (indicies.Contains(index) || values[index] == dict[key])
+                        {
+                            index = random.Next(dict.Values.Count);
+                            if (values[index] == dict[key] && !indicies.Contains(index)) indicies.Add(index); //정답 예외 처리
+                        }
+
+                        indicies.Add(index);
+                        Console.WriteLine($"{j + 1}. {values[index]}");
                     }
 
-                    indicies.Add(index);
-                    Console.WriteLine($"{j + 1}. {values[index]}");
+                    indicies.Clear();
+
+                    Console.WriteLine();
+                    string num = Console.ReadLine();
+
+                    if (int.TryParse(num, out var n))
+                    {
+                        if (n - 1 == real)
+                        {
+                            stats.SolvedCount++;
+
+                            Console.WriteLine($"Correct! [+{stats.SolvedCount}]");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            stats.WrongCount++;
+                            stats.WrongKeys.Add(key);
+
+                            Console.WriteLine($"Wrong. [+{stats.WrongCount}]");
+                            Console.ReadLine();
+                        }
+                    }
                 }
-
-                indicies.Clear();
-
-                Console.WriteLine();
-                string num = Console.ReadLine();
-
-                if (int.TryParse(num, out var n))
+                else //단답형
                 {
-                    if (n - 1 == real)
+                    string answer = Console.ReadLine();
+
+                    if (answer.Trim() == dict[key].Trim())
                     {
                         stats.SolvedCount++;
 

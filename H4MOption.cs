@@ -13,9 +13,13 @@ namespace H4M
         [JsonProperty("reverse_mode")]
         public bool ReverseMode { get; set; }
 
-        public H4MOption(bool reverseMode)
+        [JsonProperty("multiple_choice")]
+        public bool MultipleChoice { get; set; }
+
+        public H4MOption(bool reverseMode, bool multipleChoice)
         {
             ReverseMode = reverseMode;
+            MultipleChoice = multipleChoice;
         }
     }
 }

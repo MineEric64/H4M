@@ -32,10 +32,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\cbnu_boj_1.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Newtonsoft.Json.dll</HintPath>
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="OPtion, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -67,6 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="H4MA.txt" />
+    <Content Include="Resources\cbnu_boj_1.ico" />
+    <Content Include="Resources\Newtonsoft.Json.dll" />
+    <Content Include="Resources\OPtion.dll" />
+    <None Include="packages.config" />
     <None Include="Resources\settings_default.txt" />
   </ItemGroup>
   <ItemGroup>

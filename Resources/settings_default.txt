@@ -1,3 +1,4 @@
 {
-  "reverse_mode": false
+  "reverse_mode": false,
+  "multiple_choice": true
 }
